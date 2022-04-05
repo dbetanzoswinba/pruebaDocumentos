@@ -18,7 +18,7 @@ const leerDocumento = document =>{
         try {
             const resultado = await Firmes.bulkCreate(result);
             console.log(resultado);
-        } catch (error) {
+        }catch (error) {
             console.log(error.message);
         }
     });
