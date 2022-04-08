@@ -28,7 +28,6 @@ const Firmes = db.define('firmes', {
 
 Firmes.sync()
   .then( response =>{
-    console.log('Se ah creado la tabla Firmes correctamente');
   }).catch(error=>{  
     console.log(error.message);
   });
