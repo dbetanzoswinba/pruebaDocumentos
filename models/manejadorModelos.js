@@ -31,7 +31,7 @@ const manejadorModelo = modelo =>{
             return Firmes;
         case 'No_localizados':
             return NoLocalizados;
-        case 'Sentencia':
+        case 'Sentencias':
             return Sentencias;
         case 'Lista69bSat':
             return Listas69B; 

@@ -9,7 +9,7 @@ const CondonadosArt21CFF = db.define('condonadosArt21CFF', {
     type: Sequelize.STRING
   },
   tipoPersona : {
-    type: Sequelize.STRING
+    type: Sequelize.TEXT
   },
   supuesto : {
     type: Sequelize.STRING

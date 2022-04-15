@@ -29,12 +29,37 @@
   "resolved" "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
   "version" "3.7.2"
 
+"csv-generate@^4.0.4":
+  "integrity" "sha512-6/0FOBbF4O+EBSAYsfOXBjIFhyPpfeeeuWEM4XJQhc/6TvDDL9AGFQNPh2SKlFx7VYERBDmZAWnITgaa+z4BJA=="
+  "resolved" "https://registry.npmjs.org/csv-generate/-/csv-generate-4.0.4.tgz"
+  "version" "4.0.4"
+
+"csv-parse@^5.0.4":
+  "integrity" "sha512-5AIdl8l6n3iYQYxan5djB5eKDa+vBnhfWZtRpJTcrETWfVLYN0WSj3L9RwvgYt+psoO77juUr8TG8qpfGZifVQ=="
+  "resolved" "https://registry.npmjs.org/csv-parse/-/csv-parse-5.0.4.tgz"
+  "version" "5.0.4"
+
 "csv-parser@^3.0.0":
   "integrity" "sha512-s6OYSXAK3IdKqYO33y09jhypG/bSDHPuyCme/IdEHfWpLf/jKcpitVFyOC6UemgGk8v7Q5u2XE0vvwmanxhGlQ=="
   "resolved" "https://registry.npmjs.org/csv-parser/-/csv-parser-3.0.0.tgz"
   "version" "3.0.0"
   dependencies:
     "minimist" "^1.2.0"
+
+"csv-stringify@^6.0.5":
+  "integrity" "sha512-7xpV3uweJCFF/Ssn56l3xsR/k2r3UqszwjEhej9qEn2cCPzyK1WyHCgoUVzBA792x8HbwonNX7CU9XM2K5s5yw=="
+  "resolved" "https://registry.npmjs.org/csv-stringify/-/csv-stringify-6.0.5.tgz"
+  "version" "6.0.5"
+
+"csv@^6.0.5":
+  "integrity" "sha512-VyII851P4BvzMsXenhtR7g3mARmZ3HvBX16PD85E8IOoxyvNT9e74egbfdkYBj5SGHh1LphCWXeQvskijH+kfg=="
+  "resolved" "https://registry.npmjs.org/csv/-/csv-6.0.5.tgz"
+  "version" "6.0.5"
+  dependencies:
+    "csv-generate" "^4.0.4"
+    "csv-parse" "^5.0.4"
+    "csv-stringify" "^6.0.5"
+    "stream-transform" "^3.0.4"
 
 "csvtojson@^2.0.10":
   "integrity" "sha512-lUWFxGKyhraKCW8Qghz6Z0f2l/PqB1W3AO0HKJzGIQ5JRSlR651ekJDiGJbBT4sRNNv5ddnSGVEnsxP9XRCVpQ=="
@@ -285,6 +310,11 @@
   "resolved" "https://registry.npmjs.org/sqlstring/-/sqlstring-2.3.3.tgz"
   "version" "2.3.3"
 
+"stream-transform@^3.0.4":
+  "integrity" "sha512-g2jbk1hs3GiF3oHZLbR7Fph/PXh/3xHoz/D8aR2oHySE4xVUvNeTGqihhb1vxFjYyu4inqiTfT42g2MHBjjx0g=="
+  "resolved" "https://registry.npmjs.org/stream-transform/-/stream-transform-3.0.4.tgz"
+  "version" "3.0.4"
+
 "strip-bom@^2.0.0":
   "integrity" "sha1-YhmoVhZSBJHzV4i9vxRHqZx+aw4="
   "resolved" "https://registry.npmjs.org/strip-bom/-/strip-bom-2.0.0.tgz"
@@ -296,11 +326,6 @@
   "integrity" "sha1-f/0feMi+KMO6Rc1OGj9e4ZO9mYg="
   "resolved" "https://registry.npmjs.org/toposort-class/-/toposort-class-1.0.1.tgz"
   "version" "1.0.1"
-
-"underscore@^1.13.2":
-  "integrity" "sha512-ekY1NhRzq0B08g4bGuX4wd2jZx5GnKz6mKSqFL4nqBlfyMGiG10gDFhDTMEfYmDL6Jy0FUIZp7wiRB+0BP7J2g=="
-  "resolved" "https://registry.npmjs.org/underscore/-/underscore-1.13.2.tgz"
-  "version" "1.13.2"
 
 "uuid@^8.3.2":
   "integrity" "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg=="

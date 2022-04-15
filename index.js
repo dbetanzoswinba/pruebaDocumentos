@@ -1,22 +1,28 @@
 require('dotenv').config();
 const path = require('path')
 const fs = require('fs');
-const {procesarDocumento} = require('./controllers/documentoController.js');
+const { procesarDocumento } = require('./controllers/documentoController.js');
 
-const analizarDirectorio = ()=>{
-    let documentos = [];
+const analizarDirectorio = () =>{
     const rutaDocumentos = path.join(__dirname,'./docs')
-        return fs.readdirSync(rutaDocumentos);
+    return fs.readdirSync(rutaDocumentos);
 }
 
-analizarDirectorio().forEach( async item =>{
-    try{
-        const respuesta = await procesarDocumento(`./docs/${item}`);
+const main = async ()=>{
+    let contador = 0;
+    const documentos = analizarDirectorio();
+    while(contador < documentos.length){
+        try{
+            let respuesta = await procesarDocumento(`./docs/${documentos[contador]}`);
+            if(respuesta){
+                contador++;
+            }
+        }catch(error){
+            console.log(error);
+        }
     }
-    catch(error){
-        console.log(error);
-    }
-    console.log({respuesta});
-});
+    console.log('Terminado el proceso');
+}
+main();
 
-
+// procesarDocumento('./docs/Firmes.csv');

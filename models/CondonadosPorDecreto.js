@@ -12,7 +12,7 @@ const CondonadosporDecreto = db.define('condonadosPorDecreto', {
   },
 
   tipoPersona : {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
   },
   supuesto : {
     type: Sequelize.STRING,

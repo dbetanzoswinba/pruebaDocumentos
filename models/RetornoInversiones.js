@@ -9,7 +9,7 @@ const RetornoInversiones = db.define('retornoInversiones', {
     type: Sequelize.STRING
   },
   tipoPersona : {
-    type: Sequelize.STRING
+    type: Sequelize.TEXT
   },
   supuesto : {
     type: Sequelize.STRING

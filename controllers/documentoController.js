@@ -1,64 +1,80 @@
-const readline = require("readline")
 const fs = require("fs");
 const csvParser = require('csv-parser');
 const { Cabeceras } = require("../helpers/cabeceras");
 const { manejadorModelo } = require("../models/manejadorModelos");
 
-let result = [];
 let llaves=[];
-let nombreDocumento;
-let count = 0;
 
-const procesarDocumento = async (document) =>{
-  return new Promise( async (resolve, reject)=>{
-    if(fs.existsSync(document)){
-        nombreDocumento = await getNombreDocumento(document);
-        console.log(nombreDocumento);
-        llaves = await getLlaves(nombreDocumento);
-        console.log(llaves);
-        try{
-          const response = await insertarRegistros(document);
-          resolve(response);
-        }catch(err){
-          console.log(err.message);
-          reject(err);
-        }
-    }else{
-        reject('No se pudo leer el documento');
-    }
-  });
-}
+let nombreDocumento=''
+let result = [];
 
-
-const registrarInfo = (nombreModelo, data) =>{
-  return new Promise( async (resolve, reject)=>{
+const procesarDocumento =  (document) =>{
+  return new Promise(async (resolve, reject)=>{
     try{
-        const modelo = manejadorModelo(nombreModelo);
-        console.log({ modelo });
-        await modelo.bulkCreate(data);
-        console.log(`Registro de : ${nombreModelo} exitoso...!!`);
-        resolve(true);
-    }catch(err){
-        reject(err);
+      if(fs.existsSync(document)){
+          nombreDocumento = getNombreDocumento(document);
+          llaves = getLlaves(nombreDocumento);
+          let response = await leerDocumento(document);
+          if(response){
+            resolve(true)
+          }
+      }else{
+          reject('No se pudo leer el documento');
+      }
+    }catch(error){
+      console.log(error.message);
     }
   })
 }
 
-const renombrarArchivo = (doc) =>{
-  return new Promise((resolve,reject)=>{
-    try{
-      fs.rename(doc,'./docs/tempListas69b.csv',err=>{
-        if(err) throw err;
-        resolve('./docs/tempListas69b.csv');
-      });
-    }catch(err){
-      reject(err);
-    }
-  });
+const leerDocumento = document =>{
+  return new Promise( (resolve,reject)=>{
+    fs.createReadStream(document)
+    .pipe(csvParser({}))
+    .on('data',(data)=>{
+      if(validarObj(data)){
+        result.push(asignarLlaves(data));
+      }
+    }).
+    on('end',async ()=>{
+      try{
+        if(await registrarInfo(nombreDocumento)){
+          resolve('Se ah resgistrado de manera exitoso');
+        }
+      }catch(error){
+        console.log(error.message);
+        reject('Hubo un error en el proceso',error.message);
+      }
+    })
+  })
 }
 
+const registrarInfo = (nombreModelo) =>{
+  return new Promise(async (resolve, reject)=>{
+    try{
+        const modelo = manejadorModelo(nombreModelo);
+        console.log({ modelo });
+        console.log(result.length);
+        let response = await modelo.bulkCreate(result);
+        console.log(`Registro de : ${nombreModelo} exitoso...!!`);
+        result=[];
+        if(response){
+          resolve(true)
+        }
+    }catch(error){
+      console.log(error.message);
+      reject(error.message);
+    }
+  })
+}
+
+const getNombreDocumento = document =>{
+    const data = document.split('/')[2];
+    return data.split('.')[0];
+}
 
 const validarObj = obj =>{
+  try{
     const validacion = [];
     Object.keys(obj).map( key =>{
         if(obj[key]!== ''){
@@ -66,91 +82,23 @@ const validarObj = obj =>{
         }
     });
     return validacion.length > 0
+  }catch(error){
+    console.log(error);
+  }
 }
 
 const getLlaves = (nombreDocumento) =>{
-  return new Promise((resolve,reject)=>{
-    try{
-      resolve(Cabeceras[nombreDocumento]);
-    }catch(err){
-      reject(err);
-    }
-  })
+  return Cabeceras[nombreDocumento];
 }
 
-const cambiarLlaves = ( objeto ) =>{
-  return new Promise((resolve, reject)=>{
-    try {
-      let obj = {}
-      Object.keys(objeto).forEach( (key,i) =>{
-          obj[llaves[i]] = objeto[key];
-      });
-      resolve(obj);
-    } catch (error) {
-      reject(err);
-    }
-  })
-}
-
-
-const insertarRegistros = async document =>{
-  return new Promise( (resolve, reject)=>{
-    fs.createReadStream(document)
-    .pipe(csvParser({}))
-    .on('data',(data)=>{
-      if(validarObj(data)){
-          result.push(cambiarLlaves(data));
-      }
-    })  
-    .on('end',async ()=>{
-        try {
-          console.log({ nombreDocumento });
-          return;
-          await registrarInfo(nombreDocumento,result);
-          resolve(`Se ah registrado de manera correcta ${nombreDocumento}`)
-        }catch (error) {
-            reject(error.message);
-        }
-    })
-  })
-}
-
-const getNombreDocumento = document =>{
-  return new Promise((resolve, reject)=>{
-    try{
-      const data = document.split('/')[2];
-      resolve(data.split('.')[0]);
-    }catch(err){
-      reject(err);
-    }
-  })
-}
-
-const estandarizarDoc = async doc => {
-  return new Promise(async (resolve,reject)=>{
-    const docum = await renombrarArchivo(doc);
-    try {
-      let lector = readline.createInterface({
-        input: fs.createReadStream(docum)
-      });
-      lector.on("line", linea => {
-        if(count >= 2){
-          fs.appendFile('./docs/Lista69bSat.csv',linea+'\n',error =>{
-            if(error) throw error;
-          })
-        }
-        count++;
-      })
-      .on('end',()=>{
-        console.log('Proceso finalizado con exito..!!!');
-      })
-      resolve(`./docs/Lista69bSat.csv`);
-    } catch (error) {
-      reject(error.message);
-    }
+const asignarLlaves = ( objeto ) =>{
+  let obj = {}
+  Object.keys(objeto).forEach( (key,i) =>{
+      obj[llaves[i]] = objeto[key];
   });
+  return obj;
 }
+
 module.exports = {
-    estandarizarDoc,
-    procesarDocumento
+  procesarDocumento
 }

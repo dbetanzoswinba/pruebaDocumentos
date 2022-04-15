@@ -13,7 +13,7 @@ const Firmes = db.define('firmes', {
   },
 
   tipoPersona : {
-    type: Sequelize.STRING
+    type: Sequelize.TEXT
   },
   supuesto : {
     type: Sequelize.STRING
